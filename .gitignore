@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing & Type checking
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Temporary and OS files
+.DS_Store
+*.tmp
+*.bak
+~$*.docx
+*.backup.docx
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
