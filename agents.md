@@ -359,6 +359,8 @@ Antes de dar por concluida la tarea y responder al usuario:
 * [ ] **Campo TOC presente:** El elemento `<w:sdt>` contiene `TOC \o "1-3" \h \z \u`.
 * [ ] **Puntos guía configurados:** Las tabulaciones tienen `w:leader="dot"` alineadas al ancho imprimible de página (`15.0 cm`).
 * [ ] **Archivos sincronizados:** Se actualizó tanto la ruta en `CloudStorage/OneDrive-Personal/...` como la copia local del repositorio.
+* [ ] **Espejo Markdown actualizado:** Todo cambio en el documento Word se replicó de forma idéntica en `TESIS.md`.
+* [ ] **Commit de Git descriptivo:** Se generó un commit en Git con mensaje detallado que especifica la sección alterada y la naturaleza del cambio.
 
 ---
 
