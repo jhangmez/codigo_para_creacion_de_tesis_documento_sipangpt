@@ -203,23 +203,52 @@ A partir de la realidad problemática descrita y de las limitaciones operativas 
 
 ## 1.3. Objetivos
 
-[Redacción correspondiente a 1.3. Objetivos]
-
 ### 1.3.1. Objetivo General
-
-[Redacción correspondiente a 1.3.1. Objetivo General]
+Desarrollar un Chatbot basado en Transformers como asistente en las operaciones de TI en una universidad privada en la región Lambayeque.
 
 ### 1.3.2. Objetivos específicos
+1. Identificar fuentes bibliográficas sobre Chatbots basados en Transformers.
+2. Generar el Dataset según las preguntas más frecuentes de operaciones de TI.
+3. Construir un modelo de Transformers adaptado al dominio institucional.
+4. Desarrollar una interfaz gráfica para la interacción con el modelo.
+5. Evaluar el modelo con el usuario final y contrastar su desempeño operativo.
 
-[Redacción correspondiente a 1.3.2. Objetivos específicos]
+---
 
 ## 1.4. Justificación de la investigación
 
-[Redacción correspondiente a 1.4. Justificación de la investigación]
+La presente investigación se fundamenta en dimensiones teóricas, tecnológicas, prácticas y de responsabilidad social universitaria, respondiendo a la necesidad de modernizar la infraestructura de soporte digital ante el incremento de la demanda asistencial en la educación superior.
+
+### Justificación teórica y tecnológica
+Desde una perspectiva teórica, la investigación aporta al campo del Procesamiento de Lenguaje Natural (PLN) y los Modelos de Lenguaje de Gran Escala (LLMs), abordando uno de los desafíos más críticos de la inteligencia artificial generativa: la mitigación de alucinaciones en dominios institucionales cerrados. Si bien los modelos basados en la arquitectura Transformer presentan una elevada capacidad de comprensión contextual y generación fluida (Vaswani et al., 2017), su aplicación directa en tareas fácticas suele derivar en respuestas verosímiles pero inexactas si dependen exclusivamente de su memoria paramétrica (Lewis et al., 2020). 
+
+En tal sentido, la investigación se justifica al proponer y validar una arquitectura híbrida que articula el ajuste fino eficiente en parámetros (*Parameter-Efficient Fine-Tuning*, PEFT) mediante adaptadores de bajo rango LoRA (Hu et al., 2021) con un pipeline de Generación Aumentada por Recuperación guiado por estructura jerárquica (*Sipán-STAIR*), fundamentado en la metodología de Kumar et al. (2026). Esta aproximación permite adaptar el modelo Transformer al vocabulario, tono y estilo de interacción del usuario universitario, mientras que la recuperación documental garantiza que cada dato sensible (fechas de matrícula, montos de pensión, procedimientos de acceso al campus virtual) provenga directamente de los manuales y reglamentos oficiales vigentes. Metodológicamente, se contribuye además con la adopción de protocolos automatizados de evaluación basados en jueces de lenguaje (*Reference-Guided LLM-as-a-Judge*), superando las limitaciones de las métricas léxicas tradicionales en tareas conversacionales (Zheng et al., 2023).
+
+### Justificación práctica y operativa
+En el ámbito práctico, el proyecto resuelve una problemática operativa recurrente identificada en el área de soporte de tecnologías de la información de la Universidad Señor de Sipán. El diagnóstico preliminar de campo evidenció que el equipo técnico atiende entre 1,400 y 1,500 solicitudes por ciclo académico, con tiempos de respuesta que oscilan entre pocos minutos y hasta 72 horas (Gómez & Pantaleón, 2024; Anexo 3). La dispersión de canales asistenciales y la ausencia de un mecanismo de autoservicio 24/7 sobrecargan al personal especializado en la atención de consultas mecánicas y repetitivas, tales como restablecimiento de contraseñas, validación de pasarelas de pago o configuración de aulas virtuales (Serrano et al., 2021). 
+
+La implementación del chatbot permite automatizar el primer contacto asistencial, ofreciendo disponibilidad ininterrumpida y respuestas inmediatas en pocos segundos. Esto optimiza la productividad del área técnica, reduce significativamente los cuellos de botella en periodos de matrícula y exámenes, y eleva la calidad percibida del servicio tecnológico, alineándose con los postulados de Noguchi et al. (2016) respecto a la correlación directa entre la inmediatez de la respuesta y la satisfacción del usuario en plataformas educativas.
+
+### Justificación social y alineación con los Objetivos de Desarrollo Sostenible (ODS)
+Desde un enfoque de impacto social y sostenibilidad, el desarrollo de la investigación se vincula con la Agenda 2030 de las Naciones Unidas a través de dos objetivos fundamentales:
+1. **ODS 4: Educación de Calidad (Meta 4.3):** Contribuye a garantizar el acceso equitativo y transparente a una formación técnica y universitaria de calidad, mitigando la brecha de desinformación y deserción que suele originarse por trabas administrativas o dificultades en el manejo de las plataformas virtuales de aprendizaje.
+2. **ODS 9: Industria, Innovación e Infraestructura (Meta 9.5):** Promueve la modernización de los servicios universitarios mediante la investigación científica y la innovación tecnológica. Asimismo, el empleo de técnicas de cuantización de modelos a 4 bits (GGUF) para su ejecución en hardware local (*Edge AI*) fomenta el principio de *Green AI*, reduciendo el consumo energético y los costos computacionales recurrentes en comparación con arquitecturas centralizadas de nube masiva.
+
+---
 
 ## 1.5. Estructura del informe
 
-[Redacción correspondiente a 1.5. Estructura del informe]
+El presente informe final de tesis ha sido estructurado de acuerdo con las disposiciones del Reglamento General de Investigación de la Universidad Nacional Pedro Ruiz Gallo, organizándose en los siguientes capítulos:
+
+* **1. Introducción:** Presenta la síntesis de la situación problemática en las operaciones de TI universitarias, la formulación de la pregunta de investigación, los objetivos generales y específicos que orientan el estudio, y la justificación teórica, práctica y social.
+* **2. Diseño Teórico:** Desarrolla el estado del arte y los antecedentes investigativos nacionales e internacionales; establece las bases teóricas de la arquitectura Transformer, modelos de lenguaje, fine-tuning con LoRA, técnicas RAG, el modelo STAIR y métricas de evaluación; y formula la operacionalización formal de las variables de estudio mediante la matriz reglamentaria.
+* **3. Diseño Metodológico:** Expone la tipificación de la investigación aplicada y el diseño cuasi-experimental; delimita la población y la muestra documental conformada por los trece manuales y reglamentos oficiales de la universidad, así como el corpus de 400 conversaciones; y detalla las técnicas, instrumentos, equipos computacionales y aspectos éticos adoptados.
+* **4. Resultados:** Detalla los hallazgos empíricos y desarrollos de ingeniería estructurados en correspondencia con cada uno de los objetivos específicos: el pipeline de ingesta y transcripción técnica, la síntesis del dataset en formato ShareGPT, las curvas de pérdida y convergencia del modelo Transformer adaptado con Unsloth, la arquitectura de la plataforma web SipánGPT, y la validación técnica comparativa (benchmark de 50 casos) junto con la evaluación de usabilidad con usuarios finales.
+* **5. Discusión de Resultados:** Analiza críticamente los resultados obtenidos frente a los antecedentes bibliográficos y marcos teóricos, discutiendo el compromiso (*trade-off*) entre inferencia local y recuperación documental, así como la reducción de alucinaciones normativas.
+* **6. Conclusiones:** Sintetiza los logros de la investigación mediante conclusiones puntuales alineadas con los objetivos planteados.
+* **7. Recomendaciones:** Plantea directrices técnicas y metodológicas para la evolución futura, despliegue institucional y mantenimiento continuo de la solución.
+* **8. Referencias:** Registra el compendio bibliográfico formal citado a lo largo del documento bajo la norma APA 7.ª edición.
+* **9. Anexos:** Incorpora los repositorios de código fuente del proyecto, accesos a la plataforma web, catálogo de documentos oficiales, el dataset en Hugging Face, el registro completo del banco de pruebas y el cuestionario de usabilidad aplicada.
 
 ---
 
@@ -587,13 +616,23 @@ Banu, A. (2023). The impact of technology integration in educational management 
 
 Gómez Padilla, J. C., & Pantaleón Sirlopú, A. G. (2024). *Entrevista diagnóstica aplicada al personal de operaciones de tecnologías de la información de la Universidad Señor de Sipán* [Instrumento de recolección de datos preliminar no publicado]. Escuela Profesional de Ingeniería de Sistemas, Universidad Nacional Pedro Ruiz Gallo, Lambayeque, Perú. (Ver Anexo 3).
 
-Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., & Kiela, D. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *Advances in Neural Information Processing Systems (NeurIPS)*, 33, 9459–9474.
+Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., & Chen, W. (2021). LoRA: Low-rank adaptation of large language models. *arXiv preprint arXiv:2106.09685*. https://doi.org/10.48550/arXiv.2106.09685
+
+Kumar, V., Pulivarthi, M., Kumar, V., Sen, J., Bhat, R. A., & Joshi, S. (2026). STAIR (Structure-Aware Information Retriever): A novel dataset and LLM based retriever for document structure augmentation. *arXiv preprint arXiv:2609.03874*. https://doi.org/10.48550/arXiv.2609.03874
+
+Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., & Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. *Advances in Neural Information Processing Systems (NeurIPS 2020)*, 33, 9459–9474. https://doi.org/10.48550/arXiv.2005.11401
 
 Noguchi, O., Munechika, M., & Kajihara, C. (2016). A study on user satisfaction with an entire operation including indefinite-length response time. *Total Quality Science*, 2(2), 70–79. https://doi.org/10.17929/tqs.2.70
 
 Okonkwo, C. W., & Ade-Ibijola, A. (2021). Chatbots applications in education: A systematic review. *Computers and Education: Artificial Intelligence*, 2, Artículo 100033. https://doi.org/10.1016/j.caeai.2021.100033
 
+Organización de las Naciones Unidas. (2015). *Transformar nuestro mundo: la Agenda 2030 para el Desarrollo Sostenible* (Resolución A/RES/70/1). Naciones Unidas. https://undocs.org/es/A/RES/70/1
+
 Serrano, J., Faustino, J., Adriano, D., Pereira, R., & da Silva, M. M. (2021). An IT service management literature review: Challenges, benefits, opportunities and implementation practices. *Information*, 12(3), Artículo 111. https://doi.org/10.3390/info12030111
+
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. *Advances in Neural Information Processing Systems (NeurIPS 2017)*, 30, 5998–6008.
+
+Zheng, L., Chiang, W.-L., Sheng, Y., Zhuang, S., Wu, Z., Zhuang, Y., Lin, Z., Li, Z., Li, D., Xing, E. P., Zhang, H., Gonzalez, J. E., & Stoica, I. (2023). Judging LLM-as-a-judge with MT-Bench and Chatbot Arena. *Advances in Neural Information Processing Systems (NeurIPS 2023)*, 36, 46595–46623. https://doi.org/10.48550/arXiv.2306.05685
 
 ---
 
