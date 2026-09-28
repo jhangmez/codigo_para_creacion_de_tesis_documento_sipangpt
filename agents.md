@@ -30,6 +30,7 @@ Este documento describe el procedimiento técnico, la arquitectura subyacente, l
   - [7.4. Protocolo Dual Espejo y Trazabilidad Git](#74-protocolo-dual-espejo-y-trazabilidad-git)
   - [7.5. Mapeo Reglamentario de Preliminares y Prevención de Desbordes en Índices](#75-mapeo-reglamentario-de-preliminares-y-prevención-de-desbordes-en-índices)
   - [7.6. Gestión Dinámica y Consistente de Referencias APA 7ma Edición](#76-gestión-dinámica-y-consistente-de-referencias-apa-7ma-edición)
+  - [7.7. Reglas Ortográficas y de Estilo en Español: Erradicación de Anglicismos Tipográficos y Numéricos](#77-reglas-ortográficas-y-de-estilo-en-español-erradicación-de-anglicismos-tipográficos-y-numéricos)
 
 ---
 
@@ -466,6 +467,9 @@ Antes de dar por concluida la tarea y responder al usuario:
 * [ ] **Campo TOC y geometría válida:** El elemento `<w:sdt>` contiene `TOC \o "1-3" \h \z \u` con puntos guía (`w:leader="dot"`) alineados al ancho útil (`15.0 cm` = 8504 dxa), sin desbordes de línea.
 * [ ] **Edición quirúrgica aplicada:** Si el documento ya tenía estructura y secciones previas, se modificaron los párrafos ancla o se insertaron nuevos vía `_p.addnext()`, sin destruir el documento base.
 * [ ] **Referencias sincronizadas:** Toda cita añadida en el cuerpo se incluyó inmediatamente en la sección 8 en orden estrictamente alfabético y con sangría francesa (1.27 cm).
+* [ ] **Cero corchetes numéricos en citas:** No se emplean citas numéricas estilo IEEE o notas entre corchetes (`[1]`, `[1, 5]`, `[2]`). Toda cita en el cuerpo debe ajustarse estrictamente a APA 7ma edición con autor y año: `(Apellido, Año)` o `Apellido (Año)`. (Solo se permiten marcadores cuantitativos de usabilidad expresamente aprobados como `[X puntos SUS]`).
+* [ ] **Erradicación de la coma de Oxford en español:** No debe colocarse coma antes de las conjunciones copulativas "y" o "e" (`", y"` / `", e"`), salvo en casos excepcionales de oraciones independientes complejas con diferente sujeto según la RAE. En enumeraciones y oraciones compuestas estándar en español, la coma antes de la "y" es un calco del inglés (*Oxford comma*) que debe sustituirse por `" y"` o reestructurarse con enlaces como `", así como"`.
+* [ ] **Eliminación de la raya larga (em-dash `—`):** No utilizar el carácter tipográfico de raya larga o em-dash (`—`, U+2014) en la redacción de la prosa en español para oraciones aclaratorias o incisos parentéticos. Deben emplearse paréntesis convencionales `(...)`, comas explicativas o puntos seguidos, preservando la sobriedad y legibilidad en documentos académicos impresos.
 * [ ] **Archivos sincronizados (Sincronización Tripartita):** Se actualizaron simultáneamente:
   1. La ruta en `CloudStorage/OneDrive-Personal/Documentos/...`
   2. La copia local en el espacio de trabajo `./TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`
@@ -521,6 +525,11 @@ REGLAS OBLIGATORIAS:
 - RAG: Arquitectura Sipán-STAIR (ToC Tree + Two-Stage Retrieval).
 - Evaluación: Reference-Guided LLM-as-a-Judge (50 casos Ground Truth; 55% RAG vs 14% Fine-Tuned).
 - Evaluación humana: Mantener marcadores [X puntos SUS], [Y% satisfacción], [N = Z participantes].
+
+5. REGLAS GRAMATICALES Y ESTILÍSTICAS DEL ESPAÑOL ACADÉMICO:
+- Erradicación de la Coma de Oxford: En la gramática de la RAE, no se antepone coma antes de las conjunciones copulativas "y" o "e" en enumeraciones o cláusulas coordinadas simples (evitar a toda costa construcciones del tipo "A, B, y C"; debe redactarse "A, B y C" o "A, B, así como C").
+- Prohibición de Citas Numéricas entre Corchetes: No utilizar notaciones numéricas como [1], [2], [1, 5] propias de estilos como IEEE o Vancouver. En la tesis rige exclusivamente APA 7ma edición con autor-año: (Autor, Año) o Autor (Año).
+- Eliminación de la Raya Larga (Em-Dash "—"): Evitar el uso de guiones largos o rayas anglosajonas ("—") para incisos o aclaraciones en medio de los párrafos. Utilizar exclusivamente paréntesis convencionales (...) o comas explicativas. El guion de rango o en-dash (–) queda reservado únicamente para intervalos numéricos de páginas (ej. págs. 54–63) y locuciones compuestas.
 ```
 
 ---
@@ -644,4 +653,17 @@ Esta sección recopila el conocimiento empírico, las incidencias resueltas y la
   - **Cursivas:** Títulos de revistas científicas y números de volumen en cursiva; títulos de artículos en texto normal; títulos de libros o informes independientes en cursiva.
   - **DOIs y URLs:** Formato canónico HTTPS sin punto final posterior al enlace (`https://doi.org/...`).
 
-
+### 7.7. Reglas Ortográficas y de Estilo en Español: Erradicación de Anglicismos Tipográficos y Numéricos
+* **Incidencia Identificada:** En borradores previos de redacción técnica, se filtraron inadvertidamente patrones ajenos a la norma del español académico y de la directiva de titulación:
+  1. Inserción de referencias numéricas entre corchetes (`[1]`, `[1, 5]`, `[2]`, `[3]`, `[4]`) heredadas de formatos como IEEE o Vancouver.
+  2. Uso de la "coma de Oxford" anglosajona previa a las conjunciones copulativas (`", y"` / `", e"`), vicio muy extendido en modelos de lenguaje entrenados primordialmente en inglés.
+  3. Uso prolífico del carácter tipográfico de raya larga o em-dash (`—`, Unicode U+2014) como marcador parentético en prosa en español.
+* **Norma Gramatical y Fundamentación Académica (RAE y APA):**
+  - **Sistema de Citas Autor-Año (APA 7ma Edición):** La Escuela Profesional de Ingeniería de Sistemas de la UNPRG y las normas universitarias de graduación establecen como norma oficial el manual APA 7ma edición. Las citas en el texto deben formularse obligatoriamente mediante autor(es) y año (ej. *Lewis et al., 2020; Hu et al., 2021*). Las anotaciones numéricas entre corchetes son inadmisibles y deben ser depuradas o sustituidas por su correspondiente cita de autor.
+  - **Regla de la Conjunción Copulativa según la RAE:** En la ortografía de la lengua española (Real Academia Española), el uso de la coma antes de la "y" o "e" que introducen el último elemento de una serie coordinada es incorrecto. La fórmula adecuada es `"A, B y C"`. Solo se admite coma cuando el segmento coordinado tiene un sujeto distinto o enlaza proposiciones con sentido disyuntivo/adversativo complejo. Ante secuencias complejas, se debe preferir el conector estilístico `", así como"`.
+  - **Manejo de Incisos y Signos de Puntuación:** La raya larga (`—`) suele generar problemas visuales y de formateo en Word Online y conversiones PDF. En la prosa académica en español, las aclaraciones conceptuales, especificaciones de siglas o precisiones de contexto deben formularse mediante paréntesis tradicionales `(...)` o comas explicativas. El guion de rango o en-dash (`–`, U+2013) queda estrictamente restringido a intervalos numéricos (ej. *páginas 120–135*) y nombres compuestos geográficos (*Lambayeque – Perú*).
+* **Protocolo de Validación Automática para Agentes:**
+  Antes de consolidar cualquier modificación en Word (`.docx`) y Markdown (`TESIS.md`), el agente debe ejecutar una verificación regex automatizada:
+  - `re.findall(r"\[\d+(?:,\s*\d+)*\]", texto)` -> Debe retornar `[]`.
+  - `re.findall(r",\s+[ye]\b", texto)` -> Debe retornar `[]`.
+  - `re.findall(r"—", texto)` -> Debe retornar `0` ocurrencias.
