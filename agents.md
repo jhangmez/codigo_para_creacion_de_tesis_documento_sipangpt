@@ -18,9 +18,18 @@ Este documento describe el procedimiento técnico, la arquitectura subyacente, l
   - [Paso 6: Implementación del Índice Nativo Automatizado (Campo TOC)](#paso-6-implementación-del-índice-nativo-automatizado-campo-toc)
   - [Paso 7: Generación del Cuerpo del Documento](#paso-7-generación-del-cuerpo-del-documento)
   - [Paso 8: Guardado Dual y Verificación del Sistema](#paso-8-guardado-dual-y-verificación-del-sistema)
-- [4. Script de Referencia para Agentes (Python + python-docx + OpenXML)](#4-script-de-referencia-para-agentes-python--python-docx--openxml)
+- [4. Scripts de Referencia para Agentes (Python + python-docx + OpenXML)](#4-scripts-de-referencia-para-agentes-python--python-docx--openxml)
+  - [4.1. Generación Completa y Estructuración Base](#41-generación-completa-y-estructuración-base)
+  - [4.2. Edición Quirúrgica y Gestión Dinámica de Referencias](#42-edición-quirúrgica-y-gestión-dinámica-de-referencias)
 - [5. Lista de Verificación y Control de Calidad (Checklist)](#5-lista-de-verificación-y-control-de-calidad-checklist)
 - [6. Marco de Redacción Académica, Prompt del Redactor y Protocolo de Auditoría](#6-marco-de-redacción-académica-prompt-del-redactor-y-protocolo-de-auditoría-unprg--sipángpt)
+- [7. Lecciones Aprendidas, Patrones Críticos y Antipatrones Operativos](#7-lecciones-aprendidas-patrones-críticos-y-antipatrones-operativos)
+  - [7.1. Antipatrón de Alucinación Estructural y Principio "Strict Boundary"](#71-antipatrón-de-alucinación-estructural-y-principio-strict-boundary)
+  - [7.2. Patrón de Edición Quirúrgica de .docx (Preservación vs. Reescritura Destructiva)](#72-patrón-de-edición-quirúrgica-de-docx-preservación-vs-reescritura-destructiva)
+  - [7.3. Manejo de Permisos y Sandbox en macOS (CloudStorage y Git Locks)](#73-manejo-de-permisos-y-sandbox-en-macos-cloudstorage-y-git-locks)
+  - [7.4. Protocolo Dual Espejo y Trazabilidad Git](#74-protocolo-dual-espejo-y-trazabilidad-git)
+  - [7.5. Mapeo Reglamentario de Preliminares y Prevención de Desbordes en Índices](#75-mapeo-reglamentario-de-preliminares-y-prevención-de-desbordes-en-índices)
+  - [7.6. Gestión Dinámica y Consistente de Referencias APA 7ma Edición](#76-gestión-dinámica-y-consistente-de-referencias-apa-7ma-edición)
 
 ---
 
@@ -143,9 +152,10 @@ Un índice profesional de Word no debe ser texto estático plano con puntos manu
 
 ---
 
-## 4. Script de Referencia para Agentes (Python + python-docx + OpenXML)
+## 4. Scripts de Referencia para Agentes (Python + python-docx + OpenXML)
 
-El siguiente script en Python condensa la ejecución completa del proceso:
+### 4.1. Generación y Estructuración Inicial Completa
+El siguiente script en Python condensa la inicialización desde cero, inyección de estilos, márgenes A4 y tabla de contenidos (TOC) nativa:
 
 ```python
 import docx
@@ -347,20 +357,121 @@ def configurar_y_generar_tesis(ruta_onedrive, ruta_workspace, secciones):
     doc.save(ruta_workspace)
 ```
 
+### 4.2. Edición Quirúrgica y Gestión Dinámica de Referencias
+Cuando el documento ya contiene páginas preliminares, índices y secciones redactadas, **NO se debe regenerar el documento desde cero**. En su lugar, se debe abrir el archivo existente, localizar los párrafos ancla mediante coincidencia de texto, modificar su contenido o insertar párrafos subsiguientes usando la API interna OpenXML (`curr._p.addnext(new_p._p)`), y actualizar la sección de referencias preservando la sangría francesa y el orden alfabético:
+
+```python
+import docx
+from docx.shared import Pt, Cm, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+
+def edicion_quirurgica_docx(ruta_archivo, texto_p2_nuevo, nuevos_parrafos_finales, lista_referencias_apa):
+    doc = docx.Document(ruta_archivo)
+    
+    # 1. Modificación de un párrafo específico (ancla)
+    for p in doc.paragraphs:
+        if "Texto identificador del párrafo a sustituir" in p.text:
+            p.text = ""
+            p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            p.paragraph_format.line_spacing = 1.5
+            p.paragraph_format.space_after = Pt(6)
+            r = p.add_run(texto_p2_nuevo)
+            r.font.name = "Times New Roman"
+            r.font.size = Pt(12)
+            r.font.color.rgb = RGBColor(0, 0, 0)
+            break
+
+    # 2. Inserción de múltiples párrafos contiguos mediante _p.addnext()
+    p_ancla = None
+    for p in doc.paragraphs:
+        if "Texto identificador del último párrafo previo" in p.text:
+            p_ancla = p
+            break
+            
+    if p_ancla:
+        # Reemplazar el párrafo ancla con el primer bloque
+        p_ancla.text = ""
+        p_ancla.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        p_ancla.paragraph_format.line_spacing = 1.5
+        p_ancla.paragraph_format.space_after = Pt(6)
+        r = p_ancla.add_run(nuevos_parrafos_finales[0])
+        r.font.name = "Times New Roman"
+        r.font.size = Pt(12)
+        r.font.color.rgb = RGBColor(0, 0, 0)
+        
+        # Insertar los párrafos siguientes secuencialmente
+        curr = p_ancla
+        for bloque in nuevos_parrafos_finales[1:]:
+            new_p = doc.add_paragraph()
+            new_p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            new_p.paragraph_format.line_spacing = 1.5
+            new_p.paragraph_format.space_after = Pt(6)
+            r = new_p.add_run(bloque)
+            r.font.name = "Times New Roman"
+            r.font.size = Pt(12)
+            r.font.color.rgb = RGBColor(0, 0, 0)
+            curr._p.addnext(new_p._p)
+            curr = new_p
+
+    # 3. Actualización de la sección de Referencias (Capítulo 8) con Sangría Francesa
+    p_ref_heading = None
+    ref_paras = []
+    in_ref = False
+    
+    for p in doc.paragraphs:
+        if p.text.strip() == "8. REFERENCIAS":
+            p_ref_heading = p
+            in_ref = True
+            continue
+        if in_ref:
+            if p.text.strip().startswith("9. ANEXOS"):
+                break
+            if p.text.strip():
+                ref_paras.append(p)
+                
+    # Eliminar párrafos anteriores de referencias
+    for p in ref_paras:
+        p._p.getparent().remove(p._p)
+        
+    # Inyectar lista ordenada alfabéticamente con sangría francesa (1.27 cm / 0.5 in)
+    curr_ref = p_ref_heading
+    for ref_runs in lista_referencias_apa:
+        new_p = doc.add_paragraph()
+        new_p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        new_p.paragraph_format.line_spacing = 1.5
+        new_p.paragraph_format.space_after = Pt(6)
+        new_p.paragraph_format.left_indent = Cm(1.27)
+        new_p.paragraph_format.first_line_indent = Cm(-1.27)
+        for fragmento, es_cursiva in ref_runs:
+            r = new_p.add_run(fragmento)
+            r.font.name = "Times New Roman"
+            r.font.size = Pt(12)
+            r.italic = es_cursiva
+        curr_ref._p.addnext(new_p._p)
+        curr_ref = new_p
+        
+    doc.save(ruta_archivo)
+```
+
 ---
 
 ## 5. Lista de Verificación y Control de Calidad (Checklist)
 
 Antes de dar por concluida la tarea y responder al usuario:
 
-* [ ] **Backup creado:** Existe un archivo `.backup.docx` en el espacio de trabajo.
+* [ ] **Límites de contenido respetados (Strict Boundary):** Solo se redactó o modificó la sección autorizada sin inventar contenido ni rellenar capítulos futuros no aprobados.
+* [ ] **Backup creado:** Existe un archivo `.backup.docx` en el espacio de trabajo antes de iniciar la intervención.
 * [ ] **Pestaña cerrada:** Se ha recordado al usuario que cierre Word Online en Chrome para evitar sobreescritura de memoria o bloqueos de sincronización.
 * [ ] **Estilos aplicados:** Todos los títulos usan `Heading 1`, `Heading 2` o `Heading 3`, y están visibles en el Panel de Navegación de Word.
-* [ ] **Campo TOC presente:** El elemento `<w:sdt>` contiene `TOC \o "1-3" \h \z \u`.
-* [ ] **Puntos guía configurados:** Las tabulaciones tienen `w:leader="dot"` alineadas al ancho imprimible de página (`15.0 cm`).
-* [ ] **Archivos sincronizados:** Se actualizó tanto la ruta en `CloudStorage/OneDrive-Personal/...` como la copia local del repositorio.
-* [ ] **Espejo Markdown actualizado:** Todo cambio en el documento Word se replicó de forma idéntica en `TESIS.md`.
-* [ ] **Commit de Git descriptivo:** Se generó un commit en Git con mensaje detallado que especifica la sección alterada y la naturaleza del cambio.
+* [ ] **Campo TOC y geometría válida:** El elemento `<w:sdt>` contiene `TOC \o "1-3" \h \z \u` con puntos guía (`w:leader="dot"`) alineados al ancho útil (`15.0 cm` = 8504 dxa), sin desbordes de línea.
+* [ ] **Edición quirúrgica aplicada:** Si el documento ya tenía estructura y secciones previas, se modificaron los párrafos ancla o se insertaron nuevos vía `_p.addnext()`, sin destruir el documento base.
+* [ ] **Referencias sincronizadas:** Toda cita añadida en el cuerpo se incluyó inmediatamente en la sección 8 en orden estrictamente alfabético y con sangría francesa (1.27 cm).
+* [ ] **Archivos sincronizados (Sincronización Tripartita):** Se actualizaron simultáneamente:
+  1. La ruta en `CloudStorage/OneDrive-Personal/Documentos/...`
+  2. La copia local en el espacio de trabajo `./TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`
+  3. El archivo espejo [TESIS.md](file:///Users/jhan/Documents/Proyectos/tesis/Documento_de_tesis/TESIS.md).
+* [ ] **Commit de Git descriptivo:** Se generó un commit en Git con mensaje convencional detallado (`feat:`, `fix:`, `docs:`) que especifica la sección alterada y la naturaleza del cambio.
+* [ ] **Verificación de sincronización OneDrive:** Se evaluó con `fileproviderctl evaluate` confirmando `isUploaded = 1`.
 
 ---
 
@@ -458,4 +569,79 @@ Entrega tu dictamen en:
 - Observaciones críticas encontradas.
 - Versión corregida lista para empastar/sustentar si detectas desviaciones.
 ```
+
+---
+
+## 7. Lecciones Aprendidas, Patrones Críticos y Antipatrones Operativos
+
+Esta sección recopila el conocimiento empírico, las incidencias resueltas y las mejores prácticas acumuladas durante el desarrollo y mantenimiento del documento de tesis.
+
+### 7.1. Antipatrón de Alucinación Estructural y Principio "Strict Boundary"
+* **Incidencia Identificada:** Durante la adopción de una nueva jerarquía capitular (como la migración al modelo de 9 capítulos de Delgado & Tocas, 2026), un agente autogeneró proactivamente párrafos, teorías y tablas para capítulos futuros no solicitados (capítulos 2, 3, etc.), obligando al usuario a ordenar un rollback integral.
+* **Principio de Límite Estricto (Strict Boundary):** El agente NUNCA debe adelantar la redacción de secciones, capítulos o apartados futuros que no hayan sido expresamente solicitados y alimentados con fuentes por el usuario en el turno actual.
+* **Regla de Ejecución:** Toda sección o subsección pendiente de desarrollo debe mantenerse exclusivamente con su título formal y un párrafo marcador limpio:
+  ```text
+  [Redacción correspondiente a X.X. Título de la sección]
+  ```
+  El contenido real se escribe y aprueba de forma modular, sección por sección.
+
+### 7.2. Patrón de Edición Quirúrgica de .docx (Preservación vs. Reescritura Destructiva)
+* **Incidencia Identificada:** Si un documento ya cuenta con páginas preliminares estructuradas (portada, aprobación, dedicatoria, agradecimientos, resumen, abstract, índices nativos) y capítulos redactados, volver a instanciar `doc = docx.Document()` para regenerar el archivo elimina o desconfigura las secciones preexistentes.
+* **Solución Técnica (Edición Quirúrgica):**
+  1. Abrir el documento existente: `doc = docx.Document(path)`.
+  2. Localizar el párrafo ancla (`anchor paragraph`) buscando una subcadena única mediante `if "texto_clave" in p.text:`.
+  3. Modificar el texto del párrafo existente vaciando sus runs (`p.text = ""`) e inyectando un run formateado (Times New Roman 12 pt, interlineado 1.5, 6 pt posterior, justificado).
+  4. Para insertar párrafos subsiguientes sin alterar el resto del documento, instanciar nuevos párrafos con `doc.add_paragraph()` y reposicionarlos en el árbol XML detrás del ancla utilizando la API de bajo nivel:
+     ```python
+     curr._p.addnext(new_p._p)
+     curr = new_p
+     ```
+  5. Guardar los cambios tanto en la ruta de `CloudStorage` como en el workspace.
+
+### 7.3. Manejo de Permisos y Sandbox en macOS (CloudStorage y Git Locks)
+* **Incidencia Identificada:** macOS aísla las rutas fuera del espacio de trabajo del proyecto.
+  - Al leer o escribir en `/Users/<usuario>/Library/CloudStorage/OneDrive-Personal/...`, el agente en modo sandbox estándar fallará con `PackageNotFoundError` o denegación de permisos de archivo.
+  - Al ejecutar comandos de control de versiones (`git add`, `git commit`), el sandbox puede impedir la creación del archivo de bloqueo `.git/index.lock` con el error: `fatal: Unable to create '.../.git/index.lock': Operation not permitted`.
+  - La herramienta de diagnóstico `fileproviderctl evaluate` requiere acceso al demonio del sistema operativo.
+* **Regla Operativa:**
+  - Toda ejecución que involucre rutas en `~/Library/CloudStorage/...`, invocación de `fileproviderctl` o confirmación de cambios en `.git` debe ejecutarse con `BypassSandbox: true`.
+  - Si un comando falla por sandbox, reintentar de inmediato con `BypassSandbox: true` manteniendo idénticos `toolAction` y `toolSummary`.
+
+### 7.4. Protocolo Dual Espejo y Trazabilidad Git
+* **Principio de Espejo Inquebrantable:**
+  El documento Word binario (`.docx`) y el archivo Markdown legible por máquina ([TESIS.md](file:///Users/jhan/Documents/Proyectos/tesis/Documento_de_tesis/TESIS.md)) deben estar en absoluta sincronía. Ningún cambio textual, cita o ajuste estructural puede existir en Word sin estar exactamente replicado en `TESIS.md`, y viceversa.
+* **Trazabilidad Atómica en Git:**
+  - Inmediatamente después de aplicar una modificación dual (.docx + .md), se debe generar un commit en Git.
+  - El mensaje de commit debe seguir la convención semántica indicando la sección y el cambio concreto:
+    - `feat(introduccion): incorporar redacción de 1.1 Síntesis problemática y formulación del problema`
+    - `fix(introduccion): refinar párrafo 2 y puente lógico de 1.1 e incorporar referencias de Adamopoulou y Lewis`
+  - Esto proporciona una bitácora transparente de auditoría académica y permite revertir cambios puntuales ante cualquier discrepancia con el jurado o los autores.
+
+### 7.5. Mapeo Reglamentario de Preliminares y Prevención de Desbordes en Índices
+* **Secuencia de Hojas Preliminares (UNPRG / USS):**
+  1. Portada / Carátula institucional (sin foliación visible).
+  2. Hoja de Aprobación del Jurado.
+  3. Dedicatoria.
+  4. Agradecimientos.
+  5. RESUMEN (foliación en números romanos minúsculos: `i`).
+  6. ABSTRACT (foliación en números romanos minúsculos: `ii`).
+  7. Tabla de contenido / Índice general (foliación: `iii` en adelante).
+  8. Índice de figuras.
+  9. Índice de tablas.
+  10. 1. INTRODUCCIÓN (inicio del cuerpo principal con numeración arábiga: `1`, `2`, ...).
+* **Prevención de Desbordes en la Tabla de Contenidos (TOC):**
+  - Márgenes de página estándar: Izquierdo 3.5 cm, Superior 2.5 cm, Inferior 2.5 cm, Derecho 2.5 cm sobre formato A4 (21.0 × 29.7 cm).
+  - El ancho útil imprimible resultante es exactamente **15.0 cm** (`8504 dxa` en OpenXML twips).
+  - Toda tabulación del índice con puntos guía (`w:leader="dot"`) debe fijarse estrictamente a `pos="8504"` alineada a la derecha (`val="right"`). Si la tabulación excede este límite o el título es excesivamente largo sin margen de corte, el número de página desborda hacia la línea siguiente rompiendo la estética profesional del documento.
+
+### 7.6. Gestión Dinámica y Consistente de Referencias APA 7ma Edición
+* **Consistencia Bidireccional (Cita <-> Referencia):**
+  Cada vez que el texto del cuerpo incorpora una cita formal a autores (ej. *Adamopoulou & Moussiades, 2020; Banu, 2023; Gómez Padilla & Pantaleón Sirlopú, 2024; Lewis et al., 2020; Noguchi et al., 2016; Okonkwo & Ade-Ibijola, 2021; Serrano et al., 2021*), el agente debe verificar e insertar de inmediato la entrada completa en el Capítulo 8 de Referencias.
+* **Formato Riguroso OpenXML / Word:**
+  - **Orden alfabético:** Todas las referencias se ordenan alfabéticamente por el apellido del primer autor.
+  - **Sangría francesa (Hanging Indent):** Configurada obligatoriamente con `left_indent = Cm(1.27)` (0.5 pulgadas) y `first_line_indent = Cm(-1.27)`.
+  - **Tipografía y estilo:** Times New Roman 12 pt, interlineado 1.5, espaciado posterior de 6 pt.
+  - **Cursivas:** Títulos de revistas científicas y números de volumen en cursiva; títulos de artículos en texto normal; títulos de libros o informes independientes en cursiva.
+  - **DOIs y URLs:** Formato canónico HTTPS sin punto final posterior al enlace (`https://doi.org/...`).
+
 
