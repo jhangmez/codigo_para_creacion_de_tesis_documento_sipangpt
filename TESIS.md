@@ -177,15 +177,25 @@ Based on the preliminary information technology operations diagnosis reporting a
 
 # 1. INTRODUCCIÓN
 
-[Redacción correspondiente a 1. INTRODUCCIÓN]
-
 ## 1.1. Síntesis de la situación problemática
 
-[Redacción correspondiente a 1.1. Síntesis de la situación problemática]
+En el contexto global contemporáneo, la acelerada transformación digital ha redefinido la operatividad y la gestión de servicios en las instituciones de educación superior. De acuerdo con Banu (2023), la integración estratégica de las tecnologías de la información (TI) en la administración educativa resulta un factor determinante para garantizar la continuidad académica, optimizar la comunicación interdepartamental y simplificar procesos operativos complejos. No obstante, a medida que las universidades incorporan un número creciente de plataformas tecnológicas —como campus virtuales, pasarelas de pagos en línea, módulos de matrícula y repositorios de bibliotecas digitales—, la demanda asistencial dirigida a los equipos de soporte técnico experimenta un incremento exponencial (Serrano et al., 2021). Diversas investigaciones evidencian que los métodos tradicionales de atención basados exclusivamente en ventanillas presenciales, bandejas de correo electrónico o sistemas estáticos de tickets resultan insuficientes para absorber la volumetría de solicitudes generada por miles de usuarios simultáneos, generando sobrecarga administrativa y demoras sustanciales (Okonkwo & Ade-Ibijola, 2021).
+
+En el ámbito nacional, las universidades peruanas enfrentan exigencias crecientes de calidad y celeridad en la prestación de servicios estudiantiles, derivadas de los estándares de licenciamiento y acreditación institucional. En este escenario, la Universidad Señor de Sipán (USS), entidad privada ubicada en la región Lambayeque, ha desplegado un ecosistema digital integral orientado a su comunidad académica. Sin embargo, la multiplicidad de sistemas institucionales y la concurrencia masiva en hitos críticos del calendario académico —tales como los procesos de matrícula regular y extemporánea, vencimientos de cuotas de pensión, evaluaciones parciales y trámites de egreso— generan una alta concentración de requerimientos de soporte.
+
+Esta problemática fue constatada empíricamente a través del diagnóstico situacional preliminar desarrollado mediante una entrevista estructurada aplicada al personal del área de operaciones de TI de la institución (Gómez & Pantaleón, 2024; Anexo 3). A partir de dicho instrumento, se identificó que el equipo de soporte técnico gestiona una carga aproximada de 1,400 a 1,500 solicitudes por ciclo académico. Estas incidencias provienen de manera concurrente de estudiantes de pregrado, posgrado, personal administrativo y docentes de diversas facultades, evidenciando una saturación de los canales asistenciales vigentes.
+
+Asimismo, los hallazgos de campo revelaron una marcada variabilidad en los tiempos de resolución de las consultas, oscilando desde casos simples que demandan entre 5 y 10 minutos hasta solicitudes complejas que tardan hasta 72 horas en completarse (Gómez & Pantaleón, 2024). Esta dispersión temporal responde a factores como la dispersión de la información institucional en múltiples manuales y reglamentos, la necesidad de coordinación manual entre distintas dependencias (como Registros Académicos y Tesorería), y la recurrencia de solicitudes formuladas con información incompleta por parte de los usuarios. Tal como sostienen Noguchi et al. (2016), en los servicios tecnológicos educativos la longitud indeterminada del tiempo de respuesta degrada significativamente la percepción del usuario, pues la celeridad y la consistencia informativa son los determinantes principales de la satisfacción del servicio.
+
+Adicionalmente, el área de operaciones de TI carece de un canal centralizado de autoservicio disponible las 24 horas del día que permita resolver autónomamente las dudas técnicas y reglamentarias recurrentes (Gómez & Pantaleón, 2024). La atención fragmentada genera que el personal especializado dedique un porcentaje sustancial de sus horas laborales a responder preguntas repetitivas (como pasos para el restablecimiento de contraseñas del aula virtual, medios de pago autorizados o fechas límite de reserva de matrícula), en lugar de priorizar incidencias de infraestructura crítica.
+
+Ante esta situación, se evidencia la imperiosa necesidad de diseñar e implementar una solución tecnológica automatizada basada en Inteligencia Artificial y Procesamiento de Lenguaje Natural (PLN). Específicamente, el uso de modelos fundamentados en la arquitectura Transformer y mecanismos de Generación Aumentada por Recuperación (RAG) se presenta como una alternativa idónea para absorber la demanda recurrente, proveer respuestas fundamentadas en la documentación técnica oficial y reducir drásticamente los tiempos de atención, optimizando la eficiencia de las operaciones de TI y elevando la calidad del servicio percibida por la comunidad universitaria.
 
 ## 1.2. Formulación del problema de investigación
 
-[Redacción correspondiente a 1.2. Formulación del problema de investigación]
+A partir de la realidad problemática descrita y de las limitaciones operativas identificadas en la gestión de soporte tecnológico institucional, se plantea la siguiente interrogante general de investigación:
+
+> **¿Cómo puede un Chatbot basado en Transformers mejorar la eficiencia y calidad de la atención en las operaciones de TI de una universidad privada, específicamente en la región Lambayeque, al automatizar la respuesta a las consultas más frecuentes de los usuarios?**
 
 ## 1.3. Objetivos
 
@@ -567,7 +577,15 @@ Based on the preliminary information technology operations diagnosis reporting a
 
 # 8. REFERENCIAS
 
-[Redacción correspondiente a 8. REFERENCIAS]
+Banu, A. (2023). The impact of technology integration in educational management and administration. *International Journal for Multidisciplinary Research (IJFMR)*, 5(6), 1–8. https://doi.org/10.36948/ijfmr.2023.v05i06.10858
+
+Gómez Padilla, J. C., & Pantaleón Sirlopú, A. G. (2024). *Entrevista diagnóstica aplicada al personal de operaciones de tecnologías de la información de la Universidad Señor de Sipán* [Instrumento de recolección de datos preliminar no publicado]. Escuela Profesional de Ingeniería de Sistemas, Universidad Nacional Pedro Ruiz Gallo, Lambayeque, Perú. (Ver Anexo 3).
+
+Noguchi, O., Munechika, M., & Kajihara, C. (2016). A study on user satisfaction with an entire operation including indefinite-length response time. *Total Quality Science*, 2(2), 70–79. https://doi.org/10.17929/tqs.2.70
+
+Okonkwo, C. W., & Ade-Ibijola, A. (2021). Chatbots applications in education: A systematic review. *Computers and Education: Artificial Intelligence*, 2, Artículo 100033. https://doi.org/10.1016/j.caeai.2021.100033
+
+Serrano, J., Faustino, J., Adriano, D., Pereira, R., & da Silva, M. M. (2021). An IT service management literature review: Challenges, benefits, opportunities and implementation practices. *Information*, 12(3), Artículo 111. https://doi.org/10.3390/info12030111
 
 ---
 
