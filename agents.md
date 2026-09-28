@@ -31,6 +31,7 @@ Este documento describe el procedimiento técnico, la arquitectura subyacente, l
   - [7.5. Mapeo Reglamentario de Preliminares y Prevención de Desbordes en Índices](#75-mapeo-reglamentario-de-preliminares-y-prevención-de-desbordes-en-índices)
   - [7.6. Gestión Dinámica y Consistente de Referencias APA 7ma Edición](#76-gestión-dinámica-y-consistente-de-referencias-apa-7ma-edición)
   - [7.7. Reglas Ortográficas y de Estilo en Español: Erradicación de Anglicismos Tipográficos y Numéricos](#77-reglas-ortográficas-y-de-estilo-en-español-erradicación-de-anglicismos-tipográficos-y-numéricos)
+  - [7.8. Configuración de Numeración Automática en Pie de Página y Partición de Secciones](#78-configuración-de-numeración-automática-en-pie-de-página-y-partición-de-secciones)
 
 ---
 
@@ -470,6 +471,7 @@ Antes de dar por concluida la tarea y responder al usuario:
 * [ ] **Cero corchetes numéricos en citas:** No se emplean citas numéricas estilo IEEE o notas entre corchetes (`[1]`, `[1, 5]`, `[2]`). Toda cita en el cuerpo debe ajustarse estrictamente a APA 7ma edición con autor y año: `(Apellido, Año)` o `Apellido (Año)`. (Solo se permiten marcadores cuantitativos de usabilidad expresamente aprobados como `[X puntos SUS]`).
 * [ ] **Erradicación de la coma de Oxford en español:** No debe colocarse coma antes de las conjunciones copulativas "y" o "e" (`", y"` / `", e"`), salvo en casos excepcionales de oraciones independientes complejas con diferente sujeto según la RAE. En enumeraciones y oraciones compuestas estándar en español, la coma antes de la "y" es un calco del inglés (*Oxford comma*) que debe sustituirse por `" y"` o reestructurarse con enlaces como `", así como"`.
 * [ ] **Eliminación de la raya larga (em-dash `—`):** No utilizar el carácter tipográfico de raya larga o em-dash (`—`, U+2014) en la redacción de la prosa en español para oraciones aclaratorias o incisos parentéticos. Deben emplearse paréntesis convencionales `(...)`, comas explicativas o puntos seguidos, preservando la sobriedad y legibilidad en documentos académicos impresos.
+* [ ] **Paginación automática configurada (Word nativo):** El pie de página de la Sección 1 (a partir de 1. INTRODUCCIÓN) está desvinculado de las páginas preliminares (`is_linked_to_previous = False`), alineado a la derecha, con el campo nativo dinámico `PAGE` en Times New Roman 12 pt, y reinicia en 1 con formato decimal (`w:fmt="decimal" w:start="1"`). Las páginas preliminares no muestran numeración visible en carátula.
 * [ ] **Archivos sincronizados (Sincronización Tripartita):** Se actualizaron simultáneamente:
   1. La ruta en `CloudStorage/OneDrive-Personal/Documentos/...`
   2. La copia local en el espacio de trabajo `./TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`
@@ -667,3 +669,70 @@ Esta sección recopila el conocimiento empírico, las incidencias resueltas y la
   - `re.findall(r"\[\d+(?:,\s*\d+)*\]", texto)` -> Debe retornar `[]`.
   - `re.findall(r",\s+[ye]\b", texto)` -> Debe retornar `[]`.
   - `re.findall(r"—", texto)` -> Debe retornar `0` ocurrencias.
+
+### 7.8. Configuración de Numeración Automática en Pie de Página y Partición de Secciones
+* **Incidencia Identificada:** En documentos académicos extensos, la numeración manual de páginas o el uso de números fijos estáticos es un antipatrón grave, ya que al redactar nuevos párrafos o insertar figuras/tablas, la numeración queda inmediatamente desfasada. Asimismo, si no se particiona el documento en secciones independientes, Word enumera desde la carátula como página 1 o asigna números a la portada, violando la normativa de titulación.
+* **Arquitectura de Secciones y Foliación en Word OpenXML:**
+  - **Partición de Secciones:** El documento debe dividirse formalmente al menos en dos secciones (`<w:sectPr>`):
+    1. *Sección 0 (Páginas Preliminares):* Portada, Aprobación, Dedicatoria, Agradecimientos, Resumen, Abstract e Índices. Su pie de página debe mantenerse vacío (`text = ""`) o sin referencia de pie (`footerReference`), asegurando que la carátula no muestre foliación visible.
+    2. *Sección 1 (Cuerpo del Documento):* Inicia exactamente en `1. INTRODUCCIÓN` mediante un salto de sección de página siguiente (`w:type="nextPage"`).
+  - **Desvinculación del Pie de Página:** Es imperativo desacoplar el pie de página de la Sección 1 respecto al anterior mediante la API:
+    ```python
+    s1.footer.is_linked_to_previous = False
+    ```
+    Esto genera un archivo de pie independiente (`word/footer2.xml`) exclusivo para el cuerpo de la tesis sin afectar los preliminares.
+  - **Campo Nativo Dinámico (`PAGE`):** En lugar de texto plano, la numeración debe inyectarse como un campo complejo OpenXML:
+    ```xml
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Footer"/>
+        <w:jc w:val="right"/>
+        <w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/>
+          <w:sz w:val="24"/>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/>
+          <w:sz w:val="24"/>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:instrText xml:space="preserve"> PAGE </w:instrText>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/>
+          <w:sz w:val="24"/>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/>
+          <w:sz w:val="24"/>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:t>1</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/>
+          <w:sz w:val="24"/>
+          <w:szCs w:val="24"/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    ```
+  - **Reinicio en Página 1:** En las propiedades de la Sección 1 (`s1._sectPr`), se debe configurar explícitamente el elemento `pgNumType`:
+    ```xml
+    <w:pgNumType w:fmt="decimal" w:start="1"/>
+    ```
+    Garantizando que Word comience a contar automáticamente desde 1 en la Introducción y actualice todos los números subsecuentes en tiempo real.
