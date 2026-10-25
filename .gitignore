@@ -3,11 +3,36 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
 # Virtual environments
 .venv/
 venv/
 env/
 ENV/
+env.bak/
+venv.bak/
 
 # Testing & Type checking
 .pytest_cache/
@@ -15,15 +40,50 @@ ENV/
 .coverage
 htmlcov/
 
-# Temporary and OS files
+# Temporary and OS-specific files (macOS and Windows)
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Word temporary and lock files
+~$*.docx
 *.tmp
 *.bak
-~$*.docx
 *.backup.docx
+*.log
 
-# IDEs
+# Secrets, API Keys and Credentials (STRICT)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+credentials.json
+token.json
+
+# IDEs and Editors
 .idea/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Local scratchpad directory
+scratch/

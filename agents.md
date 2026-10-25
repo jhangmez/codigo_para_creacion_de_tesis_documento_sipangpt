@@ -32,6 +32,27 @@ Este documento describe el procedimiento técnico, la arquitectura subyacente, l
   - [7.6. Gestión Dinámica y Consistente de Referencias APA 7ma Edición](#76-gestión-dinámica-y-consistente-de-referencias-apa-7ma-edición)
   - [7.7. Reglas Ortográficas y de Estilo en Español: Erradicación de Anglicismos Tipográficos y Numéricos](#77-reglas-ortográficas-y-de-estilo-en-español-erradicación-de-anglicismos-tipográficos-y-numéricos)
   - [7.8. Configuración de Numeración Automática en Pie de Página y Partición de Secciones](#78-configuración-de-numeración-automática-en-pie-de-página-y-partición-de-secciones)
+- [8. Cronología Exhaustiva de Actividades y Pasos Ejecutados (Bitácora de Construcción)](#8-cronología-exhaustiva-de-actividades-y-pasos-ejecutados-bitácora-de-construcción)
+  - [8.1. Hito 1: Diagnóstico de accesibilidad a OneDrive y descarte de scraping web](#81-hito-1-diagnóstico-de-accesibilidad-a-onedrive-y-descarte-de-scraping-web)
+  - [8.2. Hito 2: Integración local vía File Provider y protocolo espejo dual](#82-hito-2-integración-local-vía-file-provider-y-protocolo-espejo-dual)
+  - [8.3. Hito 3: Estructuración canónica del documento Word (A4, márgenes USS, TOC nativo, preliminares)](#83-hito-3-estructuración-canónica-del-documento-word-a4-márgenes-uss-toc-nativo-preliminares)
+  - [8.4. Hito 4: Redacción e inyección del Capítulo 1 (Introducción completa)](#84-hito-4-redacción-e-inyección-del-capítulo-1-introducción-completa)
+  - [8.5. Hito 5: Foliación nativa automática reiniciando en página 1 desde la Introducción](#85-hito-5-foliación-nativa-automática-reiniciando-en-página-1-desde-la-introducción)
+  - [8.6. Hito 6: Protocolo de auditoría y erradicación sistemática de vicios ortográficos](#86-hito-6-protocolo-de-auditoría-y-erradicación-sistemática-de-vicios-ortográficos)
+  - [8.7. Hito 7: Redacción de 2.1 Antecedentes con 25 estudios empíricos cuantitativos](#87-hito-7-redacción-de-21-antecedentes-con-25-estudios-empíricos-cuantitativos)
+  - [8.8. Hito 8: Ingesta de evidencia científica y redacción de 2.2 Bases Teóricas (Strict Boundary)](#88-hito-8-ingesta-de-evidencia-científica-y-redacción-de-22-bases-teóricas-strict-boundary)
+  - [8.9. Hito 9: Consolidación dinámica del Capítulo 8 (Referencias) con 33 fuentes APA 7ma edición](#89-hito-9-consolidación-dinámica-del-capítulo-8-referencias-con-33-fuentes-apa-7ma-edición)
+  - [8.10. Hito 10: Actualización del RESUMEN y ABSTRACT con métricas de la Segunda Tanda](#810-hito-10-actualización-del-resumen-y-abstract-con-métricas-de-la-segunda-tanda)
+- [9. Guía Integral de Compatibilidad Multiplataforma (macOS y Windows)](#9-guía-integral-de-compatibilidad-multiplataforma-macos-y-windows)
+  - [9.1. Arquitecturas de sincronización: Apple File Provider vs. Windows Cloud Files API (NTFS)](#91-arquitecturas-de-sincronización-apple-file-provider-vs-windows-cloud-files-api-ntfs)
+  - [9.2. Módulo de resolución de rutas dinámicas: scripts/platform_utils.py](#92-módulo-de-resolución-de-rutas-dinámicas-scriptsplatform_utilspy)
+  - [9.3. Gestión de bloqueos de archivo en Windows ([WinError 32]) y Word Online](#93-gestión-de-bloqueos-de-archivo-en-windows-winerror-32-y-word-online)
+  - [9.4. Normalización de rutas, codificación UTF-8 y line endings (.gitattributes)](#94-normalización-de-rutas-codificación-utf-8-y-line-endings-gitattributes)
+  - [9.5. Guía de ejecución paso a paso en Windows (PowerShell/CMD) y macOS (Terminal/Zsh)](#95-guía-de-ejecución-paso-a-paso-en-windows-powershellcmd-y-macos-terminalzsh)
+- [10. Seguridad, Manejo de Secretos y Políticas de Publicación en GitHub](#10-seguridad-manejo-de-secretos-y-políticas-de-publicación-en-github)
+  - [10.1. Política estricta de exclusión de credenciales (.env*, llaves privadas, tokens)](#101-política-estricta-de-exclusión-de-credenciales-env-llaves-privadas-tokens)
+  - [10.2. Procedimiento de verificación previa a git push](#102-procedimiento-de-verificación-previa-a-git-push)
+- [11. Protocolo Operativo para Agentes Nuevos o Continuadores de Sesión](#11-protocolo-operativo-para-agentes-nuevos-o-continuadores-de-sesión)
 
 ---
 
@@ -736,3 +757,188 @@ Esta sección recopila el conocimiento empírico, las incidencias resueltas y la
     <w:pgNumType w:fmt="decimal" w:start="1"/>
     ```
     Garantizando que Word comience a contar automáticamente desde 1 en la Introducción y actualice todos los números subsecuentes en tiempo real.
+
+---
+
+## 8. Cronología Exhaustiva de Actividades y Pasos Ejecutados (Bitácora de Construcción)
+
+Esta sección consolida la bitácora técnica de todas las fases, intervenciones y decisiones de diseño implementadas para llevar el documento de tesis y su repositorio al estado actual de madurez académica y técnica:
+
+### 8.1. Hito 1: Diagnóstico de accesibilidad a OneDrive y descarte de scraping web
+* **Problema inicial:** El usuario suministró un enlace de edición compartida en Word Online (`1drv.ms`). Las herramientas automatizadas de scraping (cURL, fetch, navegación simulada) fallaron sistemáticamente con errores HTTP 401/403 debido a la barrera de autenticación multifactorial de Microsoft 365 y a la arquitectura interna de Word Online basada en WebSockets y renderizado propietario sobre Canvas/iFrames.
+* **Solución adoptada:** Se descartó el scraping web directo y se localizó la réplica física local en el disco duro sincronizada por el cliente de OneDrive para macOS.
+
+### 8.2. Hito 2: Integración local vía File Provider y protocolo espejo dual
+* **Diagnóstico de rutas:** Se identificó la ruta del documento en `~/Library/CloudStorage/OneDrive-Personal/Documentos/TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`.
+* **Manejo del Sandbox:** Al residir fuera del workspace del proyecto, se determinó el requerimiento imperativo de ejecutar los comandos de acceso al archivo con `BypassSandbox: true`.
+* **Protocolo de Respaldo y Espejo Dual:** Se estableció la regla de crear una copia de seguridad (`.backup.docx`) antes de cualquier modificación y de guardar simultáneamente los cambios tanto en el repositorio local (`./TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`) como en la ruta de CloudStorage, verificando el estado de sincronización con `fileproviderctl evaluate`.
+
+### 8.3. Hito 3: Estructuración canónica del documento Word (A4, márgenes USS, TOC nativo, preliminares)
+* **Generación limpia:** Debido a que los documentos iniciales de Word Online carecen de estilos predeterminados (lanzando `KeyError: 'no style with name Heading 1'`), se generó una base limpia en OpenXML con todas las definiciones tipográficas requeridas.
+* **Geometría y Márgenes:** Se fijaron los estándares oficiales de la Universidad Señor de Sipán / UNPRG: papel A4 (21,0 × 29,7 cm), margen izquierdo de 3,5 cm (encuadernación) y márgenes superior, inferior y derecho de 2,5 cm, dejando un ancho útil imprimible de 15,0 cm.
+* **Páginas Preliminares:** Se construyeron Portada institucional, Hoja de Aprobación, Dedicatoria, Agradecimientos, Resumen, Abstract e Índices nativos.
+* **Índice General Automatizado:** Se implementó un Structured Document Tag (`<w:sdt>`) con código de campo `TOC \o "1-3" \h \z \u`, directiva `<w:updateFields w:val="true"/>` y tabulación derecha con relleno de puntos fija en 15,0 cm (`pos="8504"` en dxa) para erradicar cualquier desborde de línea.
+
+### 8.4. Hito 4: Redacción e inyección del Capítulo 1 (Introducción completa)
+* **1.1 Síntesis problemática:** Se erradicó el lenguaje subjetivo inicial y las afirmaciones de "salto de fe", articulando un puente deductivo que fundamenta el tránsito desde la demanda asistencial de TI (1,400 a 1,500 tickets por semestre y demoras de hasta 72 horas) hacia la necesidad técnica de modelos Transformers y RAG jerárquico.
+* **1.2 Formulación del problema:** Problema general y problemas específicos orientados a las fases de desarrollo e impacto operativo.
+* **1.3 Objetivos:** Objetivo general (desarrollar un chatbot basado en Transformers como asistente en operaciones de TI) y cinco objetivos específicos (búsqueda bibliográfica, síntesis de dataset, adaptación del modelo Transformer, interfaz gráfica y evaluación con usuarios).
+* **1.4 Justificación tridimensional:** Justificación teórica-tecnológica (fidelidad fáctica y mitigación de alucinaciones en LLMs), justificación práctica-operativa (descongestión de tickets de primer nivel y trazabilidad) y justificación de responsabilidad socioambiental (alineación con Green AI y ODS 9 y 12 de la ONU).
+* **1.5 Estructura del informe:** Descripción detallada de los cuatro capítulos constitutivos de la tesis.
+
+### 8.5. Hito 5: Foliación nativa automática reiniciando en página 1 desde la Introducción
+* **Desvinculación de Preliminares:** Se particionó el documento en dos secciones OpenXML (`<w:sectPr>`). La Sección 0 (preliminares) se mantuvo con pie de página vacío para garantizar que la carátula no muestre numeración visible.
+* **Campo Dinámico PAGE:** En la Sección 1 (`1. INTRODUCCIÓN`), se desacopló el pie de página (`s1.footer.is_linked_to_previous = False`), se inyectó el campo nativo de Word `PAGE` alineado a la derecha en Times New Roman 12 pt, y se fijó `<w:pgNumType w:fmt="decimal" w:start="1"/>`, logrando que Word cuente automáticamente desde 1 a partir de la Introducción.
+
+### 8.6. Hito 6: Protocolo de auditoría y erradicación sistemática de vicios ortográficos
+* Se implementaron validaciones regex rigurosas para erradicar:
+  1. **Comas de Oxford anglosajonas:** Reemplazo de toda coma antes de la conjunción copulativa (`", y"` / `", e"`) por `" y "` o `", así como "`.
+  2. **Guiones largos o em-dashes (`—`):** Sustitución por paréntesis `(...)` o comas explicativas para evitar inconsistencias de renderizado en Word Online.
+  3. **Citas numéricas entre corchetes (`[1]`, `[2]`):** Sustitución por el sistema autor-año oficial APA 7ma edición.
+
+### 8.7. Hito 7: Redacción de 2.1 Antecedentes con 25 estudios empíricos cuantitativos
+* Se redactó la sección completa de Antecedentes incorporando **25 investigaciones empíricas rigurosamente documentadas** (10 internacionales y 15 nacionales de los últimos 5 años), detallando en cada caso: autor(es), año, objetivo, universidad/contexto, arquitectura técnica, metodología, muestra, resultados estadísticos cuantitativos ($t$, $p$, $R^2$, Exactitud, SUS) y aporte directo a la tesis.
+
+### 8.8. Hito 8: Ingesta de evidencia científica y redacción de 2.2 Bases Teóricas (Strict Boundary)
+* Se integraron los outputs del agente de búsqueda bibliográfica sobre 29 temas temáticos de operaciones de TI e Inteligencia Artificial.
+* **Principio de Límite Estricto (*Strict Boundary*):** Se redactaron con síntesis académica formal exclusivamente las **10 subsecciones temáticas que superaron el umbral de relevancia científica**:
+  - `2.2.1`: Rol de ITSM en educación superior (Palilingan & Batmetan, 2018).
+  - `2.2.1.1`: Gestión de incidentes y mesas de ayuda ITIL (Palilingan & Batmetan, 2018; Rahmana, 2025; Ibrahim & Hamarash, 2025).
+  - `2.2.1.2`: Problemática asistencial en picos académicos (Babar et al., 2025).
+  - `b`: Métricas de fidelidad fáctica y tasa de alucinación (Asgari et al., 2025; Dahl et al., 2024).
+  - `2.2.2.3`: Arquitectura Transformer y mecanismo de autoatención (Voita et al., 2019; Han et al., 2021; Vaswani et al., 2017).
+  - `2.2.2.5`: Ajuste fino eficiente LoRA y cuantización GGUF (Hu et al., 2021; Chavan et al., 2024; Wang et al., 2025).
+  - `2.2.2.6`: Arquitectura RAG modular (Gao et al., 2023; Mialon et al., 2023; Zhao et al., 2024; Brown et al., 2025; Farahani & Johansson, 2024).
+  - `2.2.2.7`: Arquitectura STAIR con árbol ToC (Majri, 2026; Kumar et al., 2026).
+  - `2.2.2.8`: Metodología Reference-Guided LLM-as-a-Judge (Zheng et al., 2023).
+  - `2.2.3`: Paradigma de Inteligencia en el Borde (Zhou et al., 2019).
+* Las restantes 19 subsecciones sin artículos aprobados se preservaron como borradores intactos (`[Redacción correspondiente a ...]`).
+
+### 8.9. Hito 9: Consolidación dinámica del Capítulo 8 (Referencias) con 33 fuentes APA 7ma edición
+* Se integraron las 17 nuevas referencias derivadas de las bases teóricas junto a las 16 preexistentes, alcanzando **33 referencias completas**.
+* Todas las entradas se ordenaron alfabéticamente considerando la normalización de caracteres con tildes (ej. Gómez antes de Green) y se formatearon en Word con sangría francesa estricta de 1,27 cm (0,5 pulg.), interlineado 1.5 y cursivas según el estándar APA 7.
+
+### 8.10. Hito 10: Actualización del RESUMEN y ABSTRACT con métricas de la Segunda Tanda
+* A partir de los resultados oficiales del benchmark científico en el repositorio de evaluación, se actualizaron el **RESUMEN** y el **ABSTRACT** con los valores oficiales de la Segunda Tanda de pruebas (ejecutada con memoria caliente y red de alta velocidad):
+  - **Exactitud global fáctica:** 45,00% en Sipán-STAIR vs. 6,00% en Gemma-4 Fine-Tuned (+39,00% de ventaja fáctica).
+  - **Tasa de alucinaciones:** Reducción del 90,0% al 48,0%.
+  - **Latencia media por consulta:** 7,47 segundos en Sipán-STAIR vs. 12,15 segundos en inferencia local con Gemma-4, demostrando la superioridad temporal del flujo de recuperación con streaming SSE.
+* Se redactó de forma directa y concluyente, omitiendo explicaciones sobre rondas históricas previas.
+
+---
+
+## 9. Guía Integral de Compatibilidad Multiplataforma (macOS y Windows)
+
+Para garantizar que el proyecto pueda ser ejecutado, auditado y continuado de forma transparente tanto en **macOS** como en **Windows**, se implementaron las siguientes adaptaciones arquitectónicas:
+
+### 9.1. Arquitecturas de sincronización: Apple File Provider vs. Windows Cloud Files API (NTFS)
+* **En macOS:**
+  - OneDrive opera como una extensión del sistema bajo Apple File Provider (`com.microsoft.OneDrive.FileProvider`).
+  - La ruta física en disco reside en: `~/Library/CloudStorage/OneDrive-Personal/Documentos/...`.
+  - La herramienta de línea de comandos para evaluar sincronización es `fileproviderctl evaluate <ruta>`.
+* **En Windows:**
+  - OneDrive se integra directamente en el sistema de archivos NTFS mediante la Windows Cloud Files API (`cfapi.h`).
+  - Las rutas físicas se ubican bajo el perfil de usuario:
+    - `%OneDrive%` (ej. `C:\Users\<usuario>\OneDrive\Documentos\...`).
+    - `%OneDriveConsumer%` (para cuentas personales Microsoft).
+    - `%OneDriveCommercial%` (para cuentas universitarias o corporativas Microsoft 365).
+  - El estado de hidratación del archivo (en la nube, localmente hidratado o fijado) se gestiona mediante atributos del sistema de archivos (`attrib` o `Get-ItemProperty` en PowerShell).
+
+### 9.2. Módulo de resolución de rutas dinámicas: `scripts/platform_utils.py`
+Para evitar errores de "archivo no encontrado" por rutas absolutas cableadas (*hardcoded paths*), todos los scripts del repositorio emplean `scripts/platform_utils.py`:
+* **`find_onedrive_path(filename)`**: Detecta automáticamente el sistema operativo (`platform.system()`) e inspecciona secuencialmente las rutas de CloudStorage en macOS o las variables de entorno (`%OneDrive%`, `%USERPROFILE%`) y el Registro de Windows (`HKCU\Software\Microsoft\OneDrive\Accounts\Personal`).
+* **`get_workspace_path(filename)`**: Retorna la ruta absoluta del repositorio de forma agnóstica utilizando `Path(__file__).resolve().parent.parent`.
+* **`dual_save(doc, filename)`**: Guarda el documento modificado tanto en la copia local del repositorio como en la carpeta sincronizada de OneDrive si está presente.
+
+### 9.3. Gestión de bloqueos de archivo en Windows (`[WinError 32]`) y Word Online
+* **En Windows:**
+  - Si el usuario tiene abierto el archivo en la aplicación de escritorio **Microsoft Word para Windows**, el sistema operativo bloquea el archivo con un bloqueo exclusivo de compartición NTFS. Cualquier script de Python que intente escribir en él fallará con:
+    `PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso`.
+  - Asimismo, Word de escritorio genera un archivo temporal oculto con prefijo `~$` (ej. `~$TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx`).
+* **En Word Online (Navegador Chrome/Edge):**
+  - Tanto en Windows como en macOS, si el documento está abierto en Word Online en el navegador, los servidores de Microsoft 365 mantienen un bloqueo de coautoría por WebSocket que impide que el cliente de escritorio reemplace el archivo en la nube.
+* **Protocolo de Liberación:**
+  - **Antes de ejecutar cualquier script:** El usuario o agente debe verificar que **Word de escritorio esté cerrado** y que la **pestaña de Word Online en el navegador esté cerrada**.
+
+### 9.4. Normalización de rutas, codificación UTF-8 y line endings (`.gitattributes`)
+* **Manejo de rutas:** Se utiliza exclusivamente `pathlib.Path` en lugar de concatenaciones con `/` o `\`.
+* **Codificación:** Todas las lecturas y escrituras de archivos de texto (`.md`, `.py`, `.json`) se ejecutan con `encoding="utf-8"`.
+* **Normalización Git:** Se configuró `.gitattributes` en la raíz del repositorio con la directiva `* text=auto eol=lf`, garantizando que en Windows no se introduzcan retornos de carro CRLF (`\r\n`) que provoquen diferencias artificiales en Git, mientras que los archivos `.docx` se declaran explícitamente como binarios (`*.docx binary`) para evitar cualquier alteración de bytes.
+
+### 9.5. Guía de ejecución paso a paso en Windows (PowerShell/CMD) y macOS (Terminal/Zsh)
+
+#### En Windows (PowerShell):
+```powershell
+# 1. Clonar el repositorio
+git clone https://github.com/jhangmez/codigo_para_creacion_de_tesis_documento_sipangpt.git
+cd codigo_para_creacion_de_tesis_documento_sipangpt
+
+# 2. Crear y activar entorno virtual
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Ejecutar auditoría de estilo y directivas académicas
+python scripts\audit_style_grammar.py
+
+# 5. Aplicar o actualizar cambios
+python scripts\update_resumen_benchmark.py
+```
+
+#### En macOS (Zsh / Terminal):
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/jhangmez/codigo_para_creacion_de_tesis_documento_sipangpt.git
+cd codigo_para_creacion_de_tesis_documento_sipangpt
+
+# 2. Crear y activar entorno virtual
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Instalar dependencias
+pip install -r requirements.txt
+
+# 4. Ejecutar auditoría de estilo
+python3 scripts/audit_style_grammar.py
+
+# 5. Aplicar o actualizar cambios
+python3 scripts/update_resumen_benchmark.py
+```
+
+---
+
+## 10. Seguridad, Manejo de Secretos y Políticas de Publicación en GitHub
+
+Para salvaguardar la integridad y privacidad del proyecto:
+
+### 10.1. Política estricta de exclusión de credenciales (`.env*`, llaves privadas, tokens)
+* El archivo `.gitignore` prohíbe taxativamente la inclusión de:
+  - Archivos de entorno y variables secretas: `.env`, `.env.*` (excepto `.env.example`).
+  - Certificados y llaves privadas: `*.pem`, `*.key`, `*.p12`, `*.pfx`.
+  - Tokens de acceso y credenciales JSON: `credentials.json`, `token.json`, `secrets.*`.
+  - Archivos temporales de Word y copias de seguridad locales: `~$*.docx`, `*.backup.docx`, `*.tmp`.
+  - Archivos del sistema operativo de ambos entornos: `.DS_Store`, `Thumbs.db`, `desktop.ini`.
+* En caso de requerir variables de entorno en el futuro (ej. llaves de OpenAI, Gemini o bases de datos PostgreSQL), se debe crear una plantilla vacía documentada en `.env.example` sin ningún valor sensible real.
+
+### 10.2. Procedimiento de verificación previa a `git push`
+Antes de realizar un `git push` hacia GitHub, ejecutar siempre una verificación automática de seguridad:
+```bash
+# Verificar que no existan archivos de credenciales en seguimiento
+git status --ignored
+# Escanear patrones de llaves API en archivos rastreados
+git grep -E "(api[_-]?key|secret|token|password|bearer|ghp_)"
+```
+
+---
+
+## 11. Protocolo Operativo para Agentes Nuevos o Continuadores de Sesión
+
+Si un nuevo agente de IA o desarrollador asume la continuidad de este proyecto:
+
+1. **Revisar `agents.md`:** Leer detenidamente este documento como la fuente única de verdad operativa y metodológica.
+2. **Respetar el Límite Estricto (*Strict Boundary*):** No redactar ni rellenar secciones marcadas como `[Redacción correspondiente a ...]` a menos que el usuario lo solicite expresamente y provea o apruebe la evidencia científica necesaria.
+3. **Mantener la Sincronía Espejo Dual:** Todo cambio efectuado en `TESIS_FINAL_IS_V_2024_025_GOMEZ_PANTALEON.docx` debe replicarse exactamente en `TESIS.md`.
+4. **Ejecutar el Auditor de Estilo:** Antes de finalizar cualquier turno, correr `python scripts/audit_style_grammar.py` para garantizar 0 comas Oxford, 0 guiones largos y 0 citas numéricas entre corchetes.
+5. **Generar Commits Semánticos:** Confirmar cada hito de avance en Git con mensajes atómicos y descriptivos (`feat(...)`, `fix(...)`, `docs(...)`).
