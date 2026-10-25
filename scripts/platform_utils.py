@@ -115,10 +115,13 @@ def dual_save(doc, filename: str = DOCUMENT_DEFAULT_NAME) -> tuple[Path, Optiona
 
     od_path = find_onedrive_path(filename)
     if od_path:
-        # En Windows o Mac, asegurar que el directorio padre exista
-        od_path.parent.mkdir(parents=True, exist_ok=True)
-        doc.save(str(od_path))
-        print(f"[DUAL-SAVE] Guardado en OneDrive sincronizado: {od_path}")
+        try:
+            # En Windows o Mac, asegurar que el directorio padre exista
+            od_path.parent.mkdir(parents=True, exist_ok=True)
+            doc.save(str(od_path))
+            print(f"[DUAL-SAVE] Guardado en OneDrive sincronizado: {od_path}")
+        except (PermissionError, OSError) as e:
+            print(f"[DUAL-SAVE] Aviso de permisos: No se pudo escribir en OneDrive ({e}). Requiere BypassSandbox o ejecución fuera del sandbox.")
     else:
         print(f"[DUAL-SAVE] Aviso: No se detectó ruta activa de OneDrive en {get_platform_name()}. Solo se guardó en local.")
 

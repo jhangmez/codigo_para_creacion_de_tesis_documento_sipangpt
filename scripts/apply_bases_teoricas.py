@@ -56,14 +56,14 @@ sections_drafts = {
         "y trazabilidad del soporte brindado a estudiantes y docentes."
     ),
 
-    "2.2.1.2. Problemática de atención y demanda asistencial en la USS": (
+    "2.2.1.2. Problemática de atención y demanda asistencial en la institución evaluada": (
         "Las mesas de ayuda y dependencias de soporte técnico en instituciones universitarias enfrentan cuellos de botella operativos agudos originados por la "
         "volumetría masiva de consultas durante hitos clave del calendario académico, tales como los periodos de matrícula, el registro de asignaturas, los vencimientos "
         "de pensiones y las evaluaciones finales. La experiencia del usuario (UX) se posiciona como el criterio central de evaluación de la eficacia de los servicios de soporte "
         "de TI, viéndose severamente menoscabada cuando los canales de atención tradicionales (ventanillas presenciales, teléfonos o correos electrónicos) colapsan ante "
         "solicitudes concurrentes (Babar et al., 2025). En su revisión sistemática sobre la colaboración entre humanos e inteligencia artificial en servicios de soporte de TI, "
         "Babar et al. (2025) señalan que la saturación de los canales asistenciales genera tiempos excesivos de primera respuesta, fatiga cognitiva en el personal técnico "
-        "de soporte y demoras prolongadas en la resolución de incidencias. En este contexto, la problemática asistencial constatada en la Universidad Señor de Sipán refleja "
+        "de soporte y demoras prolongadas en la resolución de incidencias. En este contexto, la problemática asistencial constatada en la universidad privada bajo estudio refleja "
         "este fenómeno estructural, donde el personal técnico debe destinar un porcentaje sustancial de su jornada laboral a absolver consultas repetitivas de primer nivel "
         "(*Tier-1*), restando capacidad operativa para atender incidentes críticos de infraestructura de red o fallos de servidores. Por ende, la literatura fundamenta que "
         "la automatización conversacional y la colaboración sinérgica entre modelos inteligentes y operadores humanos representa la solución idónea para descongestionar el "
@@ -139,7 +139,7 @@ sections_drafts = {
         "(q + ToC_D) y ejecuta una poda de ramas irrelevantes en memoria antes de descender hacia los nodos hoja pertinentes. Como demuestran empíricamente Kumar et al. (2026), "
         "la navegación estructurada eleva el Recall@1 al 82,6% y reduce la tasa de alucinación a valores inferiores al 0,05%, superando ampliamente a los índices densos "
         "convencionales (DPR) y a los motores léxicos basados en BM25. En la presente tesis, la arquitectura adoptada (denominada Sipán-STAIR) adapta este principio al "
-        "ecosistema documental de soporte de TI de la Universidad Señor de Sipán, garantizando que el asistente conversacional localice con precisión milimétrica los "
+        "ecosistema documental de soporte de TI de la institución bajo estudio, garantizando que el asistente conversacional localice con precisión milimétrica los "
         "reglamentos y guías oficiales sin extraviarse en pasajes inconexos."
     ),
 
@@ -181,7 +181,7 @@ raw_references = [
     "Dahl, M., Magesh, V., Suzgun, M., & Ho, D. E. (2024). Large legal fictions: Profiling legal hallucinations in large language models. *Journal of Legal Analysis*, 16(1), 64–93. https://doi.org/10.1093/jla/laae003",
     "Farahani, M., & Johansson, R. (2024). Deciphering the interplay of parametric and non-parametric memory in retrieval-augmented language models. *Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing*, 16966–16977. https://doi.org/10.18653/v1/2024.emnlp-main.943",
     "Gao, Y., Xiong, Y., Gao, X., Jia, K., Pan, J., Bi, Y., Dai, Y. Q., Sun, J., Wang, M., & Wang, H. (2023). Retrieval-augmented generation for large language models: A survey. *arXiv preprint arXiv:2312.10997*. https://doi.org/10.48550/arXiv.2312.10997",
-    "Gómez Padilla, J. C., & Pantaleón Sirlopú, A. G. (2024). *Entrevista diagnóstica aplicada al personal de operaciones de tecnologías de la información de la Universidad Señor de Sipán* [Instrumento de recolección de datos preliminar no publicado]. Escuela Profesional de Ingeniería de Sistemas, Universidad Nacional Pedro Ruiz Gallo, Lambayeque, Perú. (Ver Anexo 3).",
+    "Gómez Padilla, J. C., & Pantaleón Sirlopú, A. G. (2024). *Entrevista diagnóstica aplicada al personal de operaciones de tecnologías de la información de la universidad privada bajo estudio* [Instrumento de recolección de datos preliminar no publicado]. Escuela Profesional de Ingeniería de Sistemas, Universidad Nacional Pedro Ruiz Gallo, Lambayeque, Perú. (Ver Anexo 3).",
     "Green Software Foundation. (2024, 17 de octubre). *The EU AI Act: Insights from the Green AI Committee*. https://greensoftware.foundation/articles/the-eu-ai-act-insights-from-the-green-ai-committee/",
     "Han, K., Xiao, A., Wu, E., Guo, J., Xu, C., & Wang, Y. (2021). Transformer in transformer. *Advances in Neural Information Processing Systems (NeurIPS 2021)*, 34, 15908–15919. https://doi.org/10.48550/arXiv.2103.00112",
     "Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., & Chen, W. (2021). LoRA: Low-rank adaptation of large language models. *arXiv preprint arXiv:2106.09685*. https://doi.org/10.48550/arXiv.2106.09685",

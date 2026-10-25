@@ -32,7 +32,7 @@ except ImportError:
 
 new_resumen = (
     "A partir del diagnóstico preliminar de operaciones de tecnologías de la información que reporta una demanda asistencial "
-    "estimada de 1,400 a 1,500 solicitudes por ciclo académico con demoras de resolución de hasta 72 horas en la Universidad Señor de Sipán, "
+    "estimada de 1,400 a 1,500 solicitudes por ciclo académico con demoras de resolución de hasta 72 horas en una universidad privada en la región Lambayeque (en adelante, la institución bajo estudio), "
     "la presente investigación tuvo como objetivo desarrollar un chatbot basado en arquitecturas Transformer para optimizar el soporte a las operaciones "
     "tecnológicas institucionales. La metodología correspondió a una investigación aplicada con enfoque mixto y diseño cuasi-experimental con post-prueba. "
     "La muestra documental estuvo conformada por trece manuales de usuario y reglamentos oficiales vigentes organizados en cinco módulos operativos. "
@@ -50,7 +50,7 @@ new_resumen = (
 
 new_abstract = (
     "Based on the preliminary information technology operations diagnosis reporting an estimated service demand of 1,400 to 1,500 support requests "
-    "per academic semester with resolution delays of up to 72 hours at Universidad Señor de Sipán, this research aimed to develop an artificial intelligence "
+    "per academic semester with resolution delays of up to 72 hours at a private university in the Lambayeque region (hereinafter, the university under study), this research aimed to develop an artificial intelligence "
     "chatbot based on Transformer architectures to optimize institutional technological operations support. The methodological design corresponded to applied "
     "research with a mixed approach and quasi-experimental post-test design. The documentary sample comprised thirteen active official user manuals and university "
     "regulations organized into five operational modules. From this institutional corpus, a balanced dataset of 400 conversations was synthesized in ShareGPT "

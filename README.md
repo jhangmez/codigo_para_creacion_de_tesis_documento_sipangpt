@@ -5,10 +5,10 @@
   <img src="https://img.shields.io/badge/Formato-OpenXML%20%2F%20Word%20(.docx)-2b579a.svg" alt="Word docx">
   <img src="https://img.shields.io/badge/Compatibilidad-macOS%20%7C%20Windows-brightgreen.svg" alt="macOS & Windows">
   <img src="https://img.shields.io/badge/Norma-APA%207ma%20Edici%C3%B3n-orange.svg" alt="APA 7">
-  <img src="https://img.shields.io/badge/Instituci%C3%B3n-UNPRG%20%2F%20USS-darkred.svg" alt="UNPRG / USS">
+  <img src="https://img.shields.io/badge/Instituci%C3%B3n-UNPRG-darkred.svg" alt="UNPRG">
 </p>
 
-Repositorio oficial de ingeniería documental, automatización y sincronización de contenidos para la elaboración del informe final de tesis de titulación profesional en **Ingeniería de Sistemas** de la **Universidad Nacional Pedro Ruiz Gallo (UNPRG)**, desarrollado en el marco del proyecto de investigación asistencial para la **Universidad Señor de Sipán (USS)**:
+Repositorio oficial de ingeniería documental, automatización y sincronización de contenidos para la elaboración del informe final de tesis de titulación profesional en **Ingeniería de Sistemas** de la **Universidad Nacional Pedro Ruiz Gallo (UNPRG)**, desarrollado en el marco del proyecto de investigación asistencial para una universidad privada en la región Lambayeque:
 
 > **«Chatbot basado en Transformers como asistente en las operaciones de TI en una universidad privada en la región Lambayeque»**
 
@@ -129,7 +129,7 @@ python3 scripts/update_resumen_benchmark.py
 
 | Sección de la Tesis | Estado | Contenido Incorporado |
 | :--- | :---: | :--- |
-| **Páginas Preliminares** | ✅ Completo | Portada institucional UNPRG/USS, Aprobación, Dedicatoria, Agradecimientos, Resumen, Abstract e Índices automáticos. |
+| **Páginas Preliminares** | ✅ Completo | Portada institucional UNPRG, Aprobación, Dedicatoria, Agradecimientos, Resumen, Abstract e Índices automáticos. |
 | **Capítulo 1: Introducción** | ✅ Completo | 1.1 Problemática objetiva, 1.2 Formulación del problema, 1.3 Objetivos (general y 5 específicos), 1.4 Justificación tridimensional y 1.5 Estructura del informe. |
 | **Capítulo 2: Antecedentes (2.1)** | ✅ Completo | 25 estudios empíricos cuantitativos (10 internacionales y 15 nacionales de los últimos 5 años) con métricas estadísticas y aportes. |
 | **Capítulo 2: Bases Teóricas (2.2)** | 🔄 En curso | 10 subsecciones temáticas aprobadas con evidencia científica formal; 19 subsecciones preservadas como borradores bajo el principio *Strict Boundary*. |

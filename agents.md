@@ -43,6 +43,7 @@ Este documento describe el procedimiento técnico, la arquitectura subyacente, l
   - [8.8. Hito 8: Ingesta de evidencia científica y redacción de 2.2 Bases Teóricas (Strict Boundary)](#88-hito-8-ingesta-de-evidencia-científica-y-redacción-de-22-bases-teóricas-strict-boundary)
   - [8.9. Hito 9: Consolidación dinámica del Capítulo 8 (Referencias) con 33 fuentes APA 7ma edición](#89-hito-9-consolidación-dinámica-del-capítulo-8-referencias-con-33-fuentes-apa-7ma-edición)
   - [8.10. Hito 10: Actualización del RESUMEN y ABSTRACT con métricas de la Segunda Tanda](#810-hito-10-actualización-del-resumen-y-abstract-con-métricas-de-la-segunda-tanda)
+  - [8.11. Hito 11: Anonimización institucional, neutralización de marcas y definición cultural formal](#811-hito-11-anonimización-institucional-neutralización-de-marcas-y-definición-cultural-formal)
 - [9. Guía Integral de Compatibilidad Multiplataforma (macOS y Windows)](#9-guía-integral-de-compatibilidad-multiplataforma-macos-y-windows)
   - [9.1. Arquitecturas de sincronización: Apple File Provider vs. Windows Cloud Files API (NTFS)](#91-arquitecturas-de-sincronización-apple-file-provider-vs-windows-cloud-files-api-ntfs)
   - [9.2. Módulo de resolución de rutas dinámicas: scripts/platform_utils.py](#92-módulo-de-resolución-de-rutas-dinámicas-scriptsplatform_utilspy)
@@ -823,7 +824,19 @@ Esta sección consolida la bitácora técnica de todas las fases, intervenciones
   - **Exactitud global fáctica:** 45,00% en Sipán-STAIR vs. 6,00% en Gemma-4 Fine-Tuned (+39,00% de ventaja fáctica).
   - **Tasa de alucinaciones:** Reducción del 90,0% al 48,0%.
   - **Latencia media por consulta:** 7,47 segundos en Sipán-STAIR vs. 12,15 segundos en inferencia local con Gemma-4, demostrando la superioridad temporal del flujo de recuperación con streaming SSE.
-* Se redactó de forma directa y concluyente, omitiendo explicaciones sobre rondas históricas previas.
+### 8.11. Hito 11: Anonimización institucional, neutralización de marcas y definición cultural formal
+* **Anonimización rigurosa de la entidad educativa:** Para salvaguardar la confidencialidad institucional conforme a los protocolos éticos de investigación, se sustituyeron sistemáticamente todas las menciones directas a la entidad privada evaluada y sus siglas en `.docx` y `TESIS.md`:
+  - **RESUMEN y ABSTRACT:** Identificación como *"en una universidad privada en la región Lambayeque (en adelante, la institución bajo estudio)"* y *"at a private university in the Lambayeque region (hereinafter, the university under study)"*.
+  - **Sección 1.1:** Contextualización regional neutral como *"la universidad privada bajo estudio, ubicada en la región Lambayeque"*.
+  - **Sección 1.4:** Justificación referida al *"área de operaciones de TI de la universidad privada bajo estudio"*.
+  - **Sección 2.2.1.2:** Título y cuerpo ajustados a *"Problemática de atención y demanda asistencial en la institución evaluada"* (actualizando tanto el encabezado OpenXML como la entrada en caché del campo TOC dentro de `<w:sdt>`).
+  - **Sección 2.2.2.7:** Ecosistema documental de soporte de TI de *"la institución bajo estudio"*.
+  - **Capítulo 8 (Referencias):** Título de la entrevista diagnóstica anonimizado a *"Entrevista diagnóstica aplicada al personal de operaciones de tecnologías de la información de la universidad privada bajo estudio"*.
+* **Neutralización de marcas y aplicativos internos:** En la Sección 1.1 se reemplazaron los nombres de plataformas propietarias por denominaciones operativas funcionales (*"campus virtual institucional"*, *"sistema de matrícula en línea"*, *"portal de pagos"* y *"catálogo digital de biblioteca"*).
+* **Definición cultural formal de SipánGPT y Sipán-STAIR:** Al cierre de la Sección 1.1 se insertó un párrafo formal que desvincula taxativamente la nomenclatura del proyecto de cualquier marca corporativa:
+  > *«Asimismo, cabe precisar que las denominaciones técnicas «SipánGPT» (asignada a la plataforma conversacional) y «Sipán-STAIR» (asignada a la arquitectura de recuperación jerárquica) corresponden a nombres clave de desarrollo asignados en honor y reconocimiento al patrimonio histórico, arqueológico y cultural de la región Lambayeque (asociado al Señor de Sipán y a la cultura Mochica), desvinculando formalmente dicha designación de cualquier entidad educativa privada o marca institucional en particular.»*
+* **Automatización y validación:** Implementación del script multiplataforma `scripts/anonymize_institution.py` y verificación mediante `scripts/audit_style_grammar.py` (confirmando 0 menciones residuales, 0 comas Oxford, 0 em-dashes y 0 citas numéricas).
+* **Flujo Git en `feature/V1`:** Todos los cambios se integraron y versionaron exclusivamente en la rama de desarrollo `feature/V1`, manteniendo `main` como rama protegida.
 
 ---
 

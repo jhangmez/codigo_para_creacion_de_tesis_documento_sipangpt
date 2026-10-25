@@ -7,7 +7,7 @@ base_dir = "/Users/jhan/Documents/Proyectos/codigo_para_buscar_papers_sobre_tema
 folders = [
     ("2.2.1. Bases teóricas de Operaciones de TI en Educación Superior", "tema_what-is-the-role-and-operational-impact-of-in"),
     ("2.2.1.1. Gestión de servicios e incidencias de TI (ITSM / Help Desk)", "tema_how-is-it-service-management-itsm-or-itil-imp"),
-    ("2.2.1.2. Problemática de atención y demanda asistencial en la USS", "tema_what-are-the-challenges-ticket-volume-overloa"),
+    ("2.2.1.2. Problemática de atención y demanda asistencial en la institución evaluada", "tema_what-are-the-challenges-ticket-volume-overloa"),
     ("2.2.2.3. Arquitectura Transformer y Mecanismo de Autoatención", "tema_how-does-the-scaled-dot-product-and-multi-hea"),
     ("b. Métricas de Generación y Tasa de Alucinación", "tema_how-are-hallucination-rates-factual-consisten"),
     ("2.2.2.5. Ajuste Fino Eficiente (PEFT) mediante LoRA y Cuantización GGUF", "tema_how-do-low-rank-adaptation-lora-qlora-and-ggu"),
