@@ -836,7 +836,7 @@ Esta sección consolida la bitácora técnica de todas las fases, intervenciones
 * **Definición cultural formal de SipánGPT y Sipán-STAIR:** Al cierre de la Sección 1.1 se insertó un párrafo formal que desvincula taxativamente la nomenclatura del proyecto de cualquier marca corporativa:
   > *«Asimismo, cabe precisar que las denominaciones técnicas «SipánGPT» (asignada a la plataforma conversacional) y «Sipán-STAIR» (asignada a la arquitectura de recuperación jerárquica) corresponden a nombres clave de desarrollo asignados en honor y reconocimiento al patrimonio histórico, arqueológico y cultural de la región Lambayeque (asociado al Señor de Sipán y a la cultura Mochica), desvinculando formalmente dicha designación de cualquier entidad educativa privada o marca institucional en particular.»*
 * **Automatización y validación:** Implementación del script multiplataforma `scripts/anonymize_institution.py` y verificación mediante `scripts/audit_style_grammar.py` (confirmando 0 menciones residuales, 0 comas Oxford, 0 em-dashes y 0 citas numéricas).
-* **Flujo Git en `feature/V1`:** Todos los cambios se integraron y versionaron exclusivamente en la rama de desarrollo `feature/V1`, manteniendo `main` como rama protegida.
+* **Flujo Git exclusivo en `feature/V1`:** Todos los cambios y el desarrollo integral del proyecto se concentran y versionan exclusivamente en la rama `feature/V1`.
 
 ---
 
